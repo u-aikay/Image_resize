@@ -11,7 +11,7 @@ import java.io.File;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/")
+@RequestMapping("/v1/api")
 public class ImageResizerController {
 
     @Autowired
@@ -26,26 +26,11 @@ public class ImageResizerController {
     }
 
     @PostMapping("/resize")
-    public String resizeImage(@RequestParam("image")MultipartFile imageFile, RedirectAttributes redirectAttributes,
-                              int size){
-        if(imageFile.isEmpty()) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Please choose file to upload.");
-            return "redirect:/";
-        }
+    public String resizeImage(@RequestParam("image")MultipartFile imageFile, int dimension){
 
         File file = fileUploadService.uploadedImage(imageFile);
-        if(file == null) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Upload failed.");
-            return "redirect:/";
-        }
+        imageResizerService.resizeImage(file, dimension);
 
-        boolean resizeResult = imageResizerService.resizeImage(file, size);
-        if(!resizeResult) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Resize failed.");
-            return "redirect:/";
-        }
-
-        redirectAttributes.addFlashAttribute("successMessage", "File upload successfully.");
-        return "redirect:/";
+        return "image resized successfully";
     }
 }
