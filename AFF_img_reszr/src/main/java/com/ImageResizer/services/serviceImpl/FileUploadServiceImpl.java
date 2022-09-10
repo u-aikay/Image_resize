@@ -14,18 +14,18 @@ import java.nio.file.Paths;
 @Service
 @Slf4j
 public class FileUploadServiceImpl implements FileUploadService {
+
     @Value("${image.folder}")
     private String imgFolder;
 
     @Override
-    public File uploadedImage(MultipartFile img) {
-        try{
-            Path path = Paths.get(imgFolder, img.getOriginalFilename());
-            Files.write(path, img.getBytes());
+    public File uploadedImage(MultipartFile image) {
+        try {
+            Path path = Paths.get(imgFolder, image.getOriginalFilename());
+            Files.write(path, image.getBytes());
             return path.toFile();
-
-        }catch (IOException e) {
-            log.info(e.getMessage(), e);
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
             return null;
         }
     }

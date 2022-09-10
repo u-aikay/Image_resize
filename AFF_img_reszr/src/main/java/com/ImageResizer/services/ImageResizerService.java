@@ -1,7 +1,8 @@
 package com.ImageResizer.services;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 
 public interface ImageResizerService {
-    boolean resizeImage(File sourceFile, int dimension);
+    BufferedImage resizeImage(File sourceFile, int dimension);
 }

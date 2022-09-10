@@ -1,13 +1,16 @@
 package com.ImageResizer.controllers;
 
+import com.ImageResizer.imageUrlRepos.ImageUrlRepo;
 import com.ImageResizer.services.ImageResizerService;
 import com.ImageResizer.services.FileUploadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,6 +22,8 @@ public class ImageResizerController {
 
     @Autowired
     private ImageResizerService imageResizerService;
+    @Autowired
+    private ImageUrlRepo imageUrlRepo;
 
     @GetMapping("")
     public String uploadImage(){
@@ -26,7 +31,7 @@ public class ImageResizerController {
     }
 
     @PostMapping("/resize")
-    public String resizeImage(@RequestParam("image")MultipartFile imageFile, int dimension){
+    public String resizeImage(@RequestParam("image")MultipartFile imageFile, int dimension) throws IOException {
 
         File file = fileUploadService.uploadedImage(imageFile);
         imageResizerService.resizeImage(file, dimension);
